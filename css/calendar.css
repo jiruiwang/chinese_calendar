@@ -1,0 +1,573 @@
+:root{--ink:#2b2118;--muted:#6e5b44;--cinnabar:#8f2d1f;--paper:#f4ead5;--line:#b99a63;--soft:#fff8e9;--shadow:rgba(40,25,8,.22);--page-w:1172px;--day-w:36px;--month-w:58px;}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;color:var(--ink);font-family:"Noto Serif CJK TC","Noto Serif CJK SC","Songti SC","SimSun",serif;background:radial-gradient(circle at 20% 10%, rgba(151,83,45,.18), transparent 26rem),radial-gradient(circle at 80% 0%, rgba(173,135,66,.15), transparent 22rem),linear-gradient(135deg,#d8c196,#f6ecd5 34%,#d9bd86 100%);min-width:calc(var(--page-w) + 40px);}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:linear-gradient(90deg, rgba(111,75,30,.18) 1px, transparent 1px),linear-gradient(rgba(111,75,30,.12) 1px, transparent 1px);background-size:22px 22px;mix-blend-mode:multiply}
+.toolbar{position:sticky;top:0;z-index:30;display:flex;gap:.75rem;align-items:center;justify-content:space-between;width:var(--page-w);margin:0 auto;padding:.55rem .9rem;background:rgba(43,33,24,.92);color:#fff7e8;box-shadow:0 5px 20px var(--shadow);backdrop-filter:blur(8px)}
+.toolbar .title{font-weight:700;letter-spacing:.08em;white-space:nowrap} .controls{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;justify-content:flex-end} select,button{font:inherit;border:1px solid rgba(255,248,232,.35);border-radius:.35rem;background:#fff8e9;color:var(--ink);padding:.28rem .5rem} button{cursor:pointer;background:#7d2419;color:white}
+.index{padding:.6rem 0 0;width:var(--page-w);margin:auto;display:flex;gap:.25rem;flex-wrap:wrap} .index a{text-decoration:none;color:#5b281d;background:rgba(255,248,232,.55);border:1px solid rgba(117,78,28,.22);border-radius:.25rem;padding:.1rem .32rem;font-size:.76rem}
+.book{width:var(--page-w);margin:0 auto;padding:.75rem 0 1.2rem} .year-page{position:relative;width:var(--page-w);min-height:720px;margin:0 auto 1rem;padding:.9rem 1rem 1rem;border:1.6px solid var(--line);border-radius:.6rem;background:linear-gradient(180deg,rgba(255,250,239,.95),rgba(241,226,194,.98));box-shadow:0 12px 32px var(--shadow), inset 0 0 0 7px rgba(183,143,78,.12);overflow:visible;page-break-after:always;break-after:page}
+.year-page::before{content:"";position:absolute;inset:.48rem;border:1px solid rgba(143,45,31,.24);border-radius:.4rem;pointer-events:none} .page-mark{display:none!important}
+.year-head{position:relative;z-index:1;border-bottom:2px solid rgba(143,45,31,.55);padding-bottom:.45rem;margin-bottom:.5rem} .year-title-line{display:flex;align-items:flex-start;gap:1.1rem}
+.year-title-block{display:flex;flex-direction:column;gap:3px;flex:0 0 auto}.new-year-solar{font-size:14px;line-height:1.15;color:#000;font-weight:600;letter-spacing:.02em;white-space:nowrap}
+h1{margin:0;display:flex;gap:.5rem;align-items:baseline;white-space:nowrap;font-size:32px;line-height:1.05;color:#000;font-weight:700;letter-spacing:.04em} h1 span{font:inherit;color:#000}
+.year-era-summary{display:grid;grid-template-columns:1fr;gap:2px;font-size:16px;line-height:1.18;color:#3f2a1c;padding-top:0;max-width:1000px}
+.year-era-block{display:grid;grid-template-columns:1.7em 1fr;gap:.45rem;align-items:start} .year-era-power{font-weight:700;color:#7d2419} .year-era-lines{display:flex;flex-direction:column;gap:1px;white-space:normal}
+.table-wrap{position:relative;z-index:1;overflow:visible;border:0;background:rgba(255,251,241,.72);width:max-content;max-width:100%}
+table{border-collapse:collapse;table-layout:fixed;width:auto} .calendar-table th,.calendar-table td{border:1px solid rgba(104,72,36,.36);text-align:center;vertical-align:middle;padding:0;line-height:1.05;white-space:nowrap}
+.calendar-table thead th{height:22px;background:#5b2b1f;color:#fff7e8;font-weight:600;font-size:14px;width:var(--day-w);min-width:var(--day-w);max-width:var(--day-w)} .calendar-table thead th.month-col{width:var(--month-w);min-width:var(--month-w);max-width:var(--month-w)}
+.month-name{width:var(--month-w);min-width:var(--month-w);max-width:var(--month-w);font-size:14px!important;background:#efe1c6;color:#3b2115;font-weight:700} .month-name.leap{background:#e5c7a0;color:#7c2116}
+.day-cell{width:var(--day-w);min-width:var(--day-w);max-width:var(--day-w);height:40px;background:rgba(255,252,245,.9);cursor:default;transition:transform .12s ease, box-shadow .12s ease, background .12s ease;position:relative;overflow:hidden}
+.day-cell.day-clickable{cursor:pointer} .day-cell.day-clickable:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(68,41,14,.30);z-index:3;background:#fffaf0} .day-cell.active{outline:2px solid rgba(143,45,31,.6);outline-offset:-2px}
+.day-cell .top{height:22px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#2b2118;background:rgba(255,252,245,.95)} .day-cell .bottom{height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#5b4631;background:rgba(255,248,232,.82);border-top:1px solid rgba(104,72,36,.2)} .day-cell.empty{background:rgba(202,181,144,.10)!important;color:transparent} .day-cell.empty .top,.day-cell.empty .bottom{display:none!important;background:transparent!important;color:transparent!important;border:0!important} .bottom.rollover{background:#eadfca!important;color:#7b4b19;font-weight:700}
+.bottom[data-term="立春"]{background:#CCFFD9;color:#5b261e;font-weight:700;}
+.bottom[data-term="雨水"]{background:#CCFFCC;color:#5b261e;font-weight:700;}
+.bottom[data-term="驚蟄"]{background:#D9FFCC;color:#5b261e;font-weight:700;}
+.bottom[data-term="春分"]{background:#E6FFCC;color:#5b261e;font-weight:700;}
+.bottom[data-term="清明"]{background:#F2FFCC;color:#5b261e;font-weight:700;}
+.bottom[data-term="穀雨"]{background:#FFFFCC;color:#5b261e;font-weight:700;}
+.bottom[data-term="立夏"]{background:#FFF2CC;color:#5b261e;font-weight:700;}
+.bottom[data-term="小滿"]{background:#FFE6CC;color:#5b261e;font-weight:700;}
+.bottom[data-term="芒種"]{background:#FFD9CC;color:#5b261e;font-weight:700;}
+.bottom[data-term="夏至"]{background:#FFCCCC;color:#5b261e;font-weight:700;}
+.bottom[data-term="小暑"]{background:#FFCCD9;color:#5b261e;font-weight:700;}
+.bottom[data-term="大暑"]{background:#FFCCE6;color:#5b261e;font-weight:700;}
+.bottom[data-term="立秋"]{background:#FFCCF2;color:#5b261e;font-weight:700;}
+.bottom[data-term="處暑"]{background:#FFCCFF;color:#5b261e;font-weight:700;}
+.bottom[data-term="白露"]{background:#F2CCFF;color:#5b261e;font-weight:700;}
+.bottom[data-term="秋分"]{background:#E6CCFF;color:#5b261e;font-weight:700;}
+.bottom[data-term="寒露"]{background:#D9CCFF;color:#5b261e;font-weight:700;}
+.bottom[data-term="霜降"]{background:#CCCCFF;color:#5b261e;font-weight:700;}
+.bottom[data-term="立冬"]{background:#CCD9FF;color:#5b261e;font-weight:700;}
+.bottom[data-term="小雪"]{background:#CCE6FF;color:#5b261e;font-weight:700;}
+.bottom[data-term="大雪"]{background:#CCF2FF;color:#5b261e;font-weight:700;}
+.bottom[data-term="冬至"]{background:#CCFFFF;color:#5b261e;font-weight:700;}
+.bottom[data-term="小寒"]{background:#CCFFF2;color:#5b261e;font-weight:700;}
+.bottom[data-term="大寒"]{background:#CCFFE6;color:#5b261e;font-weight:700;}
+
+.detail-panel{position:absolute;z-index:1000;display:none;width:448px;max-width:448px;background:#fffaf0;border:1.5px solid #9f7540;border-radius:10px;box-shadow:0 12px 30px rgba(32,19,5,.32);padding:10px 12px 11px;color:var(--ink)} .detail-panel.show{display:block}
+.detail-panel::before{content:"";position:absolute;top:-8px;left:var(--arrow-left,24px);width:14px;height:14px;background:#fffaf0;border-left:1.5px solid #9f7540;border-top:1.5px solid #9f7540;transform:rotate(45deg)}
+.detail-close{position:absolute;right:8px;top:6px;border:0;background:transparent;color:#7d2419;font-size:17px;line-height:1;cursor:pointer;padding:2px 4px} .detail-title{font-size:16px;font-weight:700;color:#34261d;margin:0 24px 8px 0}
+.date-grid,.era-detail-row{display:grid;grid-template-columns:72px minmax(0,1fr) 70px;column-gap:6px;align-items:start;font-size:16px;line-height:1.25} .date-grid{margin-bottom:8px;border-bottom:1px solid rgba(104,72,36,.22);padding-bottom:6px}
+.date-label,.era-power{font-weight:700;color:#8f2d1f} .date-main{display:block;text-align:left;white-space:nowrap} .date-cal,.era-cal{text-align:right;color:#6e5b44;white-space:nowrap}
+.era-list{display:grid;gap:4px} .era-detail-main{display:grid;grid-template-columns:minmax(124px,1fr) 68px 62px;column-gap:2px;align-items:start;text-align:left;min-width:0} .era-detail-main span{text-align:left;white-space:nowrap;overflow:visible} .era-power{white-space:nowrap;overflow:visible} .date-cal,.era-cal{text-align:right;white-space:nowrap}
+@media print{@page{size:A4 landscape;margin:6mm} body{background:#fff;min-width:0} body::before,.toolbar,.index{display:none!important} .book,.year-page{width:100%;padding:0;margin:0} .year-page{box-shadow:none;border-radius:0;min-height:auto;break-after:page;background:#fffdf5;overflow:hidden}}
+.toolbar a{
+  font:inherit;border:1px solid rgba(255,248,232,.35);border-radius:.35rem;
+  background:#fff8e9;color:var(--ink);padding:.28rem .5rem;text-decoration:none
+}
+.toolbar .nav-disabled{
+  opacity:.38;border:1px solid rgba(255,248,232,.35);border-radius:.35rem;
+  background:#fff8e9;color:var(--ink);padding:.28rem .5rem
+}
+.index-shell{
+  position:relative;width:820px;margin:36px auto;padding:1.2rem 1.35rem 1.4rem;
+  border:1.6px solid var(--line);border-radius:.6rem;
+  background:linear-gradient(180deg,rgba(255,250,239,.95),rgba(241,226,194,.98));
+  box-shadow:0 12px 32px var(--shadow),inset 0 0 0 7px rgba(183,143,78,.12)
+}
+.index-shell::before{
+  content:"";position:absolute;inset:.48rem;border:1px solid rgba(143,45,31,.24);
+  border-radius:.4rem;pointer-events:none
+}
+.index-shell h1{position:relative;justify-content:center;margin:.25rem 0 0;font-size:32px}
+.index-subtitle{position:relative;text-align:center;margin:.45rem 0 1.1rem;color:var(--muted)}
+.year-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.year-card{
+  min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-decoration:none;color:var(--ink);border:1px solid rgba(104,72,36,.36);
+  background:rgba(255,252,245,.9);box-shadow:0 3px 8px rgba(68,41,14,.18);
+  transition:transform .12s ease,box-shadow .12s ease,background .12s ease
+}
+.year-card:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(68,41,14,.28);background:#fffaf0}
+.year-card strong{font-size:26px;color:#000}
+.year-card span{font-size:17px;margin-top:4px}
+.year-card small{font-size:13px;color:var(--muted);margin-top:6px}
+@media(max-width:860px){
+  .index-shell{width:calc(100% - 28px)}
+  .year-grid{grid-template-columns:1fr}
+}
+
+/* 0419—0485年目录 */
+.index-shell.year-directory{width:1080px}
+.year-directory .year-grid{grid-template-columns:repeat(7,1fr);gap:8px}
+.year-directory .year-card{min-height:78px;padding:6px 4px}
+.year-directory .year-card strong{font-size:19px}
+.year-directory .year-card span{font-size:14px;margin-top:2px}
+.year-directory .year-card small{font-size:11px;margin-top:3px}
+@media(max-width:1100px){.index-shell.year-directory{width:calc(100% - 28px)}.year-directory .year-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:650px){.year-directory .year-grid{grid-template-columns:repeat(2,1fr)}}
+
+
+/* 目录页：纪年与朝代双检索 */
+.dual-index{
+  width:min(1040px,calc(100% - 32px));
+  min-height:620px;
+}
+.index-tabs{
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  max-width:520px;
+  margin:0 auto 20px;
+  border:1px solid var(--line);
+  background:rgba(255,250,239,.72);
+  border-radius:7px;
+  overflow:hidden;
+}
+.index-tab{
+  border:0;
+  border-radius:0;
+  padding:10px 20px;
+  font:700 18px/1.2 "Noto Serif CJK TC","Songti SC","SimSun",serif;
+  color:var(--ink);
+  background:transparent;
+  cursor:pointer;
+}
+.index-tab + .index-tab{border-left:1px solid var(--line)}
+.index-tab.active{
+  color:#fff8e9;
+  background:linear-gradient(180deg,#8f402e,#713023);
+}
+.index-panel{position:relative}
+.index-search-box{
+  max-width:720px;
+  margin:0 auto 14px;
+  padding:14px 16px;
+  border:1px solid rgba(104,72,36,.34);
+  background:rgba(255,252,245,.86);
+}
+.index-search-box label{
+  display:block;
+  margin-bottom:7px;
+  font-weight:700;
+}
+.search-input-row{display:grid;grid-template-columns:1fr auto;gap:8px}
+.search-input-row input{
+  min-width:0;
+  border:1px solid #a47c48;
+  border-radius:4px;
+  padding:9px 11px;
+  font:16px/1.2 inherit;
+  color:var(--ink);
+  background:#fffdf8;
+}
+.search-input-row button{
+  border:1px solid #a47c48;
+  border-radius:4px;
+  padding:7px 15px;
+  background:#f2e2c3;
+  color:var(--ink);
+  cursor:pointer;
+}
+.search-help{
+  margin-top:7px;
+  color:var(--muted);
+  font-size:13px;
+}
+.result-count{
+  margin:10px 2px 8px;
+  text-align:right;
+  color:var(--muted);
+  font-size:14px;
+}
+.chronology-results{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.search-year-card{
+  display:grid;
+  grid-template-columns:112px minmax(0,1fr);
+  gap:12px;
+  min-height:102px;
+  padding:10px 12px;
+  color:var(--ink);
+  text-decoration:none;
+  border:1px solid rgba(104,72,36,.34);
+  background:rgba(255,252,245,.88);
+  box-shadow:0 2px 6px rgba(68,41,14,.12);
+}
+.search-year-card:hover{
+  background:#fffaf0;
+  border-color:#8f402e;
+  box-shadow:0 5px 12px rgba(68,41,14,.22);
+}
+.search-year-main{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  border-right:1px solid rgba(104,72,36,.22);
+  padding-right:10px;
+}
+.search-year-main strong{font-size:21px;white-space:nowrap}
+.search-year-main span{margin-top:2px;font-size:16px}
+.search-year-main small{margin-top:4px;color:var(--muted);white-space:nowrap}
+.result-eras{
+  align-self:center;
+  min-width:0;
+  font-size:13px;
+  line-height:1.42;
+}
+.no-results{
+  grid-column:1/-1;
+  padding:35px 20px;
+  text-align:center;
+  border:1px dashed var(--line);
+  background:rgba(255,252,245,.62);
+  color:var(--muted);
+}
+.dynasty-cards{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:9px;
+  margin-bottom:18px;
+}
+.dynasty-card{
+  min-height:104px;
+  padding:10px 8px;
+  border:1px solid rgba(104,72,36,.36);
+  border-radius:4px;
+  background:rgba(255,252,245,.85);
+  color:var(--ink);
+  cursor:pointer;
+  font-family:inherit;
+}
+.dynasty-card strong{
+  display:block;
+  font-size:21px;
+  margin-bottom:5px;
+}
+.dynasty-card span,.dynasty-card small{
+  display:block;
+  color:var(--muted);
+  line-height:1.35;
+}
+.dynasty-card small{margin-top:4px}
+.dynasty-card.active{
+  border-color:#7e3223;
+  box-shadow:inset 0 0 0 1px #7e3223;
+  background:#f6e6c7;
+}
+.dynasty-heading{
+  display:flex;
+  align-items:baseline;
+  gap:12px;
+  padding:7px 3px;
+  border-bottom:1px solid rgba(104,72,36,.34);
+}
+.dynasty-heading strong{font-size:23px}
+.dynasty-heading span{color:var(--muted)}
+.dynasty-results{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:9px;
+  margin-top:12px;
+}
+.search-year-card.compact{
+  display:block;
+  min-height:82px;
+  padding:7px 9px;
+}
+.search-year-card.compact .search-year-main{
+  border-right:0;
+  padding-right:0;
+}
+.search-year-card.compact .result-eras{
+  margin-top:5px;
+  padding-top:5px;
+  border-top:1px solid rgba(104,72,36,.18);
+  text-align:center;
+  font-size:12px;
+}
+@media(max-width:900px){
+  .chronology-results{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dynasty-cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .dynasty-results{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:620px){
+  .chronology-results{grid-template-columns:1fr}
+  .dynasty-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dynasty-results{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .search-year-card{grid-template-columns:104px minmax(0,1fr)}
+}
+
+/* 0401—0500年目录 */
+.index-shell.year-directory{width:1080px}
+.year-directory .year-grid{grid-template-columns:repeat(7,1fr);gap:8px}
+.year-directory .year-card{min-height:78px;padding:6px 4px}
+.year-directory .year-card strong{font-size:19px}
+.year-directory .year-card span{font-size:14px;margin-top:2px}
+.year-directory .year-card small{font-size:11px;margin-top:3px}
+@media(max-width:1100px){.index-shell.year-directory{width:calc(100% - 28px)}.year-directory .year-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:650px){.year-directory .year-grid{grid-template-columns:repeat(2,1fr)}}
+
+
+/* 目录卡片最终格式：纪年与朝代一致，每行五张 */
+.dual-index{
+  width:min(1260px,calc(100% - 28px));
+}
+.chronology-results,
+.dynasty-results{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px;
+}
+.dynasty-results{margin-top:12px}
+.search-year-card,
+.search-year-card.compact{
+  display:grid;
+  grid-template-columns:88px minmax(0,1fr);
+  gap:8px;
+  min-height:94px;
+  padding:8px 9px;
+}
+.search-year-card .search-year-main,
+.search-year-card.compact .search-year-main{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  border-right:1px solid rgba(104,72,36,.22);
+  padding-right:8px;
+}
+.search-year-main strong{font-size:18px}
+.search-year-main span{font-size:14px}
+.search-year-main small{font-size:11px}
+.result-eras,
+.search-year-card.compact .result-eras{
+  align-self:center;
+  margin:0;
+  padding:0;
+  border-top:0;
+  min-width:0;
+  text-align:left;
+  font-size:11px;
+  line-height:1.28;
+}
+.result-era-line{
+  display:grid;
+  grid-template-columns:26px minmax(0,1fr);
+  gap:3px;
+  align-items:start;
+  margin:1px 0;
+}
+.result-era-state,
+.result-era-text{
+  display:block;
+  margin:0;
+  color:var(--muted);
+  text-align:left;
+  white-space:nowrap;
+}
+.result-era-state{
+  color:var(--ink);
+  font-weight:700;
+}
+.result-era-text{
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.result-eras-empty{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+}
+@media(max-width:1120px){
+  .chronology-results,.dynasty-results{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .chronology-results,.dynasty-results{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:680px){
+  .chronology-results,.dynasty-results{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:460px){
+  .chronology-results,.dynasty-results{grid-template-columns:1fr}
+}
+
+
+/* 目录卡片右栏字号加大 */
+.result-eras,
+.search-year-card.compact .result-eras{
+  font-size:13px;
+  line-height:1.34;
+}
+.result-era-state,
+.result-era-text{
+  font-size:13px;
+}
+
+
+/* 君主检索 */
+.index-tabs{grid-template-columns:repeat(3,1fr);max-width:720px}
+.ruler-list,.ruler-results{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px
+}
+.ruler-list{margin-bottom:16px}
+.ruler-results{margin-top:12px}
+.ruler-card{
+  min-height:82px;padding:8px 7px;border:1px solid rgba(104,72,36,.36);
+  border-radius:4px;background:rgba(255,252,245,.85);color:var(--ink);
+  cursor:pointer;font-family:inherit
+}
+.ruler-card strong{display:block;font-size:17px;white-space:nowrap}
+.ruler-card span,.ruler-card small{
+  display:block;margin-top:4px;color:var(--muted);line-height:1.3
+}
+.ruler-card.active{
+  border-color:#7e3223;box-shadow:inset 0 0 0 1px #7e3223;background:#f6e6c7
+}
+.ruler-heading{
+  display:flex;align-items:baseline;gap:12px;padding:7px 3px;
+  border-bottom:1px solid rgba(104,72,36,.34)
+}
+.ruler-heading strong{font-size:23px}
+.ruler-heading span{color:var(--muted)}
+@media(max-width:1120px){
+  .ruler-list,.ruler-results{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .ruler-list,.ruler-results{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:680px){
+  .ruler-list,.ruler-results{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:460px){
+  .ruler-list,.ruler-results{grid-template-columns:1fr}
+}
+
+
+/* 朝代与国君检索合并 */
+.index-tabs{
+  grid-template-columns:repeat(2,1fr);
+  max-width:520px;
+}
+.dynasty-cards{
+  grid-template-columns:repeat(5,minmax(0,1fr));
+}
+.dynasty-card{
+  display:flex;
+  flex-direction:column;
+  min-height:132px;
+  padding:0;
+  overflow:hidden;
+}
+.dynasty-card-main{
+  flex:1;
+  width:100%;
+  padding:9px 8px 7px;
+  border:0;
+  background:transparent;
+  color:inherit;
+  font-family:inherit;
+  cursor:pointer;
+}
+.dynasty-card-main strong{
+  display:block;
+  font-size:21px;
+  margin-bottom:5px;
+}
+.dynasty-card-main span,
+.dynasty-card-main small{
+  display:block;
+  color:var(--muted);
+  line-height:1.35;
+}
+.dynasty-card-main small{margin-top:4px}
+.dynasty-ruler-select{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  align-items:center;
+  gap:5px;
+  padding:6px 7px;
+  border-top:1px solid rgba(104,72,36,.22);
+  background:rgba(239,224,193,.45);
+  font-size:12px;
+}
+.dynasty-ruler-select span{
+  color:var(--muted);
+  white-space:nowrap;
+}
+.dynasty-ruler-select select{
+  width:100%;
+  min-width:0;
+  padding:3px 4px;
+  border:1px solid rgba(104,72,36,.45);
+  border-radius:3px;
+  background:#fffaf0;
+  color:var(--ink);
+  font:12px/1.2 inherit;
+}
+@media(max-width:1120px){
+  .dynasty-cards{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .dynasty-cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:680px){
+  .dynasty-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:460px){
+  .dynasty-cards{grid-template-columns:1fr}
+}
+
+
+/* 川象齋日曆目录标题 */
+.dual-index > h1{
+  margin-bottom:34px;
+}
+.dual-index > h1 span{
+  font-family:"LiSu","隸書","隶书","STLiti","KaiTi","標楷體",serif;
+  font-size:42px;
+  font-weight:400;
+  letter-spacing:.16em;
+}
+.index-tabs{
+  margin-top:8px;
+}
+
+
+/* 目录页字体：主标题隸書，其余统一黑体 */
+.dual-index,
+.dual-index button,
+.dual-index input,
+.dual-index select{
+  font-family:"Microsoft YaHei","PingFang SC","Noto Sans CJK TC","Heiti TC","SimHei",sans-serif;
+}
+.dual-index > h1 span{
+  font-family:"LiSu","隸書","隶书","STLiti","KaiTi","標楷體",serif;
+}
+
+/* 年份卡片干支放大加粗 */
+.search-year-main span{
+  font-size:18px;
+  font-weight:700;
+  line-height:1.2;
+  color:var(--ink);
+}
+
+
+/* 全站正文与日历页统一黑体 */
+html,
+body,
+button,
+input,
+select,
+textarea,
+table,
+.toolbar,
+.book,
+.year-page,
+.calendar-table,
+.detail-panel{
+  font-family:"Microsoft YaHei","微软雅黑","PingFang SC","Noto Sans CJK TC",
+              "Noto Sans CJK SC","Heiti TC","黑體-繁","SimHei",sans-serif !important;
+}
+
+/* 主标题严格使用隶书；不再回退到楷书 */
+.dual-index > h1,
+.dual-index > h1 span{
+  font-family:LiSu,"隶书","隸書",serif !important;
+  font-style:normal;
+  font-weight:400;
+}

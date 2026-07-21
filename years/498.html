@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>川象曆 0498年</title>
+<link rel="stylesheet" href="../css/calendar.css">
+</head>
+<body data-year="498">
+<nav class="toolbar">
+  <div class="title">川象曆 0498年</div>
+  <div class="controls">
+    <a href="../index.html">目录</a>
+    <a href="497.html">← 0497年</a>
+    <a href="499.html">0499年 →</a>
+    <label>跳至 <select id="yearSelect" aria-label="年份"></select></label>
+  </div>
+</nav>
+<main class="book">
+  <section class="year-page" data-year="498" id="y498">
+    <header class="year-head">
+      <div class="year-title-line">
+        <div class="year-title-block">
+          <h1><span class="year-num" id="yearNumber"></span><span class="year-gz" id="yearGanzhi"></span></h1>
+          <div class="new-year-solar" id="solarNewYear"></div>
+        </div>
+        <div class="year-era-summary" id="eraSummary"></div>
+      </div>
+    </header>
+    <div class="table-wrap"><table class="calendar-table" id="calendarTable"></table></div>
+  </section>
+</main>
+<div class="detail-panel" id="detailPanel" role="dialog" aria-live="polite">
+  <button class="detail-close" id="closeDetail" type="button">×</button>
+  <div class="detail-title" id="detailTitle"></div>
+  <div class="date-grid" id="dateGrid"></div>
+  <div class="era-list" id="eraList"></div>
+</div>
+<script src="../data/498.js"></script>
+<script src="../js/calendar.js"></script>
+</body>
+</html>
