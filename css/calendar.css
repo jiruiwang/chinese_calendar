@@ -86,7 +86,7 @@ table{border-collapse:collapse;table-layout:fixed;width:auto} .calendar-table th
   .year-grid{grid-template-columns:1fr}
 }
 
-/* 0419—0485年目录 */
+/* 0419—0485年目録 */
 .index-shell.year-directory{width:1080px}
 .year-directory .year-grid{grid-template-columns:repeat(7,1fr);gap:8px}
 .year-directory .year-card{min-height:78px;padding:6px 4px}
@@ -97,7 +97,7 @@ table{border-collapse:collapse;table-layout:fixed;width:auto} .calendar-table th
 @media(max-width:650px){.year-directory .year-grid{grid-template-columns:repeat(2,1fr)}}
 
 
-/* 目录页：纪年与朝代双检索 */
+/* 目録页：纪年与朝代双检索 */
 .dual-index{
   width:min(1040px,calc(100% - 32px));
   min-height:620px;
@@ -291,7 +291,7 @@ table{border-collapse:collapse;table-layout:fixed;width:auto} .calendar-table th
   .search-year-card{grid-template-columns:104px minmax(0,1fr)}
 }
 
-/* 0401—0500年目录 */
+/* 0401—0500年目録 */
 .index-shell.year-directory{width:1080px}
 .year-directory .year-grid{grid-template-columns:repeat(7,1fr);gap:8px}
 .year-directory .year-card{min-height:78px;padding:6px 4px}
@@ -302,7 +302,7 @@ table{border-collapse:collapse;table-layout:fixed;width:auto} .calendar-table th
 @media(max-width:650px){.year-directory .year-grid{grid-template-columns:repeat(2,1fr)}}
 
 
-/* 目录卡片最终格式：纪年与朝代一致，每行五张 */
+/* 目録卡片最终格式：纪年与朝代一致，每行五张 */
 .dual-index{
   width:min(1260px,calc(100% - 28px));
 }
@@ -386,7 +386,7 @@ table{border-collapse:collapse;table-layout:fixed;width:auto} .calendar-table th
 }
 
 
-/* 目录卡片右栏字号加大 */
+/* 目録卡片右栏字号加大 */
 .result-eras,
 .search-year-card.compact .result-eras{
   font-size:13px;
@@ -512,7 +512,7 @@ table{border-collapse:collapse;table-layout:fixed;width:auto} .calendar-table th
 }
 
 
-/* 川象齋日曆目录标题 */
+/* 川象齋日曆目録标题 */
 .dual-index > h1{
   margin-bottom:34px;
 }
@@ -527,7 +527,7 @@ table{border-collapse:collapse;table-layout:fixed;width:auto} .calendar-table th
 }
 
 
-/* 目录页字体：主标题隸書，其余统一黑体 */
+/* 目録页字体：主标题隸書，其余统一黑体 */
 .dual-index,
 .dual-index button,
 .dual-index input,
@@ -570,4 +570,361 @@ table,
   font-family:LiSu,"隶书","隸書",serif !important;
   font-style:normal;
   font-weight:400;
+}
+
+
+/* 年頁標題後年號：加寬國號列 */
+.year-era-power{
+  min-width:4.8em;
+  width:4.8em;
+  flex:0 0 4.8em;
+  text-align:left;
+}
+
+
+/* 日曆頁年份前往控制：避免標籤與下拉重疊 */
+.toolbar .controls label{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  white-space:nowrap;
+}
+.toolbar .controls label select{
+  margin-left:0;
+  min-width:92px;
+}
+
+/* 彈窗正朔欄位：按字符寬度固定對齊，長文字僅在本欄換行 */
+.detail-panel{
+  width:496px;
+  max-width:calc(100vw - 16px);
+}
+.era-detail-head,
+.era-detail-row{
+  display:grid;
+  grid-template-columns:4em 5em 7em 4em 4em 5em;
+  column-gap:.35em;
+  align-items:start;
+  width:100%;
+  min-width:0;
+  font-size:15px;
+  line-height:1.3;
+}
+.era-detail-head{
+  padding:0 0 3px;
+  margin-bottom:2px;
+  border-bottom:1px solid rgba(104,72,36,.22);
+  color:#6e5b44;
+  font-size:12px;
+  font-weight:700;
+}
+.era-detail-head span,
+.era-detail-row span{
+  display:block;
+  min-width:0;
+  max-width:100%;
+  text-align:left;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+  overflow:hidden;
+}
+.era-detail-row .era-power{
+  color:#8f2d1f;
+  font-weight:700;
+}
+.era-detail-head span:last-child,
+.era-detail-row .era-cal{
+  color:#6e5b44;
+  text-align:right;
+}
+.date-grid .date-cal{
+  text-align:right;
+}
+.era-empty{padding:3px 0;color:#6e5b44}
+
+/* 年頁標題：國號與年號分欄，年號整體右移，避免重疊 */
+.year-era-block{
+  grid-template-columns:4.8em minmax(0,1fr);
+  column-gap:.7rem;
+}
+.year-era-power{
+  min-width:0;
+  width:auto;
+  max-width:4.8em;
+  overflow-wrap:anywhere;
+}
+.year-era-lines{
+  min-width:0;
+  padding-left:.15rem;
+}
+
+/* 彈窗上下欄共用六欄軌道：日期起點對齊國君，曆法統一靠右 */
+.detail-panel{
+  box-sizing:border-box;
+  width:496px;
+  max-width:calc(100vw - 16px);
+}
+.date-grid,
+.era-detail-head,
+.era-detail-row{
+  grid-template-columns:4em 5em 7em 4em 4em 5em;
+  column-gap:.35em;
+}
+.date-grid{
+  display:grid;
+  align-items:start;
+  width:100%;
+  min-width:0;
+  font-size:16px;
+  line-height:1.25;
+}
+.date-grid > span,
+.era-detail-head > span,
+.era-detail-row > span{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  min-width:0;
+  justify-self:stretch;
+}
+.date-grid > :nth-child(1){grid-column:1;grid-row:1}
+.date-grid > :nth-child(2){grid-column:2 / 6;grid-row:1}
+.date-grid > :nth-child(3){grid-column:6;grid-row:1}
+.date-grid > :nth-child(4){grid-column:1;grid-row:2}
+.date-grid > :nth-child(5){grid-column:2 / 6;grid-row:2}
+.date-grid > :nth-child(6){grid-column:6;grid-row:2}
+.date-grid .date-main{
+  text-align:left;
+  justify-self:start;
+}
+.date-grid .date-cal,
+.era-detail-head > span:last-child,
+.era-detail-row .era-cal{
+  text-align:right;
+  justify-self:stretch;
+}
+.era-detail-head > span:not(:last-child),
+.era-detail-row > span:not(.era-cal){
+  text-align:left;
+  justify-self:start;
+}
+
+/* 彈窗上下欄共用固定列軌：中西曆不溢出，右側曆法嚴格對齊 */
+.detail-panel{box-sizing:border-box;width:496px;max-width:calc(100vw - 16px);overflow:hidden}
+.date-grid,.era-detail-row{grid-template-columns:60px 75px 105px 60px 60px 75px !important;column-gap:3px !important;box-sizing:border-box;width:100%;max-width:100%;min-width:0}
+.date-grid .date-main{min-width:0;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:clip}
+.date-grid .date-cal,.era-detail-row .era-cal{grid-column:6;width:100%;min-width:0;text-align:right !important;justify-self:stretch !important;white-space:nowrap;overflow:hidden}
+@media(max-width:510px){.date-grid,.era-detail-row{grid-template-columns:minmax(42px,4fr) minmax(52px,5fr) minmax(72px,7fr) minmax(42px,4fr) minmax(42px,4fr) minmax(52px,5fr) !important;column-gap:2px !important}.date-grid{font-size:14px}.era-detail-row{font-size:13px}}
+
+/* 彈窗欄位微調：國號五字；上欄日期與下欄國君共用起點 */
+.detail-panel{width:510px;max-width:calc(100vw - 16px)}
+.date-grid,.era-detail-row{
+  grid-template-columns:5em 5em 7em 4em 4em 5em !important;
+  column-gap:3px !important;
+}
+.date-grid > :nth-child(2),.date-grid > :nth-child(5){grid-column:2 / 6 !important}
+.era-detail-row .era-power{white-space:normal;overflow-wrap:anywhere;word-break:keep-all}
+@media(max-width:524px){
+  .date-grid,.era-detail-row{
+    grid-template-columns:minmax(48px,5fr) minmax(52px,5fr) minmax(72px,7fr) minmax(40px,4fr) minmax(40px,4fr) minmax(52px,5fr) !important;
+    column-gap:2px !important;
+  }
+}
+
+.year-era-name{font-weight:400}.year-era-note{font-family:KaiTi,"STKaiti","Kaiti SC",serif;font-style:normal;font-weight:400}
+.result-era-note{font-family:KaiTi,"STKaiti","Kaiti SC",serif;font-style:normal}
+
+.year-era-note{font-size:15px;}
+
+.result-era-text .year-era-name{font-weight:400;}
+
+/* 年份卡與年標題中的年號用宋體；其餘內容沿用原有黑體。 */
+.year-era-name,.result-era-name{font-family:"SimSun","Songti SC","Noto Serif CJK SC","Noto Serif CJK TC",serif !important;font-weight:400 !important;}
+/* 總標題及各頁左上角繼續使用隸書。 */
+.index-shell > h1,.toolbar .title{font-family:LiSu,"隶书","隸書",STLiti,serif !important;}
+
+/* 0001—0500 全面重讀版：標題、出典與間距 */
+.toolbar .title,.index-shell > h1{font-family:LiSu,"隶书","隸書",STLiti,serif !important;}
+.year-title-line{column-gap:1.1rem;}
+.year-title-block{padding-bottom:1.1em;}
+.year-era-lines{gap:2px;}
+.year-era-entry{display:flex;flex-direction:column;align-items:flex-start;gap:1px;}
+.year-era-name{font-family:"SimSun","Songti SC","Noto Serif CJK SC","Noto Serif CJK TC",serif !important;font-weight:400 !important;}
+.year-era-note{display:block;font-family:KaiTi,"STKaiti","Kaiti SC",serif !important;font-size:14px !important;line-height:1.18;font-style:normal;font-weight:400;}
+.result-era-name{font-family:"SimSun","Songti SC","Noto Serif CJK SC","Noto Serif CJK TC",serif !important;font-weight:400 !important;}
+
+/* 0001-0500 correction: show popup sources */
+.year-title-block{gap:0 !important;}
+.event-list{margin-top:.7rem;padding-top:.55rem;border-top:1px solid rgba(143,45,31,.35);display:grid;gap:.35rem;}
+.event-line{display:grid;grid-template-columns:3.2rem 1fr;gap:.55rem;align-items:start;font-size:14px;line-height:1.45;}
+.event-line b{font-weight:600;}
+.event-line span{white-space:normal;overflow-wrap:anywhere;}
+.source-line span{font-family:KaiTi,"STKaiti","Kaiti SC",serif;font-size:13px;}
+
+
+/* 2026-07-24 標題對齊修正：右側年號區與左側年份標題頂端對齊；
+   元日西曆置於年份標題下方，兩者之間保留一行。 */
+.year-era-summary{
+  padding-top:0 !important;
+  align-self:flex-start;
+}
+.year-title-block{
+  padding-bottom:0 !important;
+}
+.new-year-solar{
+  margin-top:1.05rem !important;
+  margin-bottom:0 !important;
+}
+
+/* 全年份共用的彈窗格式。 */
+.era-detail-head{
+  display:grid;
+}
+.event-line span:empty{
+  display:none;
+}
+.event-line:has(span:empty){
+  grid-template-columns:1fr;
+}
+
+/* 2026-07-24 年页出典分栏与弹窗六列统一 */
+.year-era-summary{
+  display:grid !important;
+  grid-template-columns:4.8em max-content minmax(0,1fr) !important;
+  column-gap:.72rem !important;
+  row-gap:3px !important;
+  align-items:start !important;
+  padding-top:0 !important;
+  max-width:none !important;
+  min-width:0;
+}
+.year-era-row{display:contents;}
+.year-era-power{grid-column:1;min-width:0 !important;width:auto !important;max-width:none !important;color:#7d2419;font-weight:700;text-align:left;}
+.year-era-name{grid-column:2;white-space:nowrap;font-family:"SimSun","Songti SC","Noto Serif CJK SC","Noto Serif CJK TC",serif !important;font-weight:400 !important;}
+.year-era-source{grid-column:3;min-width:0;font-family:KaiTi,"STKaiti","Kaiti SC","標楷體",serif !important;font-size:13px;line-height:1.22;font-weight:400;color:#49372a;overflow-wrap:anywhere;}
+.year-era-source > span{display:block;}
+
+/* 上栏、下栏表头与下栏数据严格共用六列固定轨道。 */
+.detail-panel{box-sizing:border-box !important;width:482px !important;max-width:calc(100vw - 16px) !important;overflow:hidden !important;}
+.date-grid,.era-detail-head,.era-detail-row{
+  display:grid !important;
+  grid-template-columns:72px 74px 110px 52px 52px 78px !important;
+  column-gap:3px !important;
+  align-items:start !important;
+  box-sizing:border-box !important;
+  width:100% !important;
+  min-width:0 !important;
+  max-width:100% !important;
+}
+.date-grid{font-size:15px !important;line-height:1.28 !important;}
+.era-detail-head{font-size:12px !important;line-height:1.28 !important;}
+.era-detail-row{font-size:14px !important;line-height:1.3 !important;}
+.date-grid > span,.era-detail-head > span,.era-detail-row > span{display:block !important;box-sizing:border-box !important;min-width:0 !important;max-width:100% !important;margin:0 !important;padding:0 !important;}
+.date-grid > :nth-child(1){grid-column:1;grid-row:1;}
+.date-grid > :nth-child(2){grid-column:2 / 6;grid-row:1;}
+.date-grid > :nth-child(3){grid-column:6;grid-row:1;}
+.date-grid > :nth-child(4){grid-column:1;grid-row:2;}
+.date-grid > :nth-child(5){grid-column:2 / 6;grid-row:2;}
+.date-grid > :nth-child(6){grid-column:6;grid-row:2;}
+.date-grid .date-main{text-align:left !important;white-space:nowrap !important;overflow:hidden !important;}
+.date-grid .date-cal,.era-detail-head > span:last-child,.era-detail-row .era-cal{grid-column:6;width:100% !important;text-align:right !important;justify-self:stretch !important;white-space:nowrap !important;overflow:hidden !important;}
+.era-detail-head > span:not(:last-child),.era-detail-row > span:not(.era-cal){text-align:left !important;}
+.era-detail-row .era-power{white-space:normal !important;overflow-wrap:anywhere !important;word-break:keep-all !important;}
+@media(max-width:496px){
+  .date-grid,.era-detail-head,.era-detail-row{grid-template-columns:minmax(46px,5fr) minmax(50px,5fr) minmax(70px,7fr) minmax(38px,4fr) minmax(38px,4fr) minmax(50px,5fr) !important;column-gap:2px !important;}
+  .date-grid{font-size:13px !important;}.era-detail-row{font-size:12px !important;}
+}
+
+
+/* 2026-07-24 微調：日欄加寬，標題中的國號、年號、出典按每行底端對齊。 */
+.year-era-summary{
+  align-items:end !important;
+}
+.year-era-power,
+.year-era-name,
+.year-era-source{
+  align-self:end !important;
+}
+.detail-panel{
+  width:490px !important;
+}
+.date-grid,
+.era-detail-head,
+.era-detail-row{
+  grid-template-columns:72px 74px 110px 52px 60px 78px !important;
+}
+@media(max-width:504px){
+  .date-grid,
+  .era-detail-head,
+  .era-detail-row{
+    grid-template-columns:minmax(46px,5fr) minmax(50px,5fr) minmax(70px,7fr) minmax(38px,4fr) minmax(46px,5fr) minmax(50px,5fr) !important;
+    column-gap:2px !important;
+  }
+}
+
+
+/* 2026-07-27：年號列上對齊、出典列下對齊；彈窗出典保持可見。 */
+.year-era-summary{
+  align-items:stretch !important;
+}
+.year-era-power,
+.year-era-name{
+  align-self:start !important;
+}
+.year-era-source{
+  align-self:end !important;
+}
+.detail-panel{
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+  overscroll-behavior:contain;
+}
+.detail-panel.above::before{
+  top:auto;
+  bottom:-8px;
+  transform:rotate(225deg);
+}
+.source-line{
+  display:grid !important;
+}
+.source-line b,
+.source-line span{
+  display:block !important;
+}
+
+/* 2026-07-27：頁首題名字號、年號欄寬與國號不換行。 */
+.toolbar .title{
+  font-size:20px !important;
+  line-height:1.05 !important;
+}
+.year-era-summary{
+  flex:1 1 0 !important;
+  width:0 !important;
+  grid-template-columns:5.8em 10em minmax(0,1fr) !important;
+  column-gap:.78rem !important;
+}
+.year-era-power{
+  white-space:nowrap !important;
+  overflow:visible !important;
+  overflow-wrap:normal !important;
+  word-break:keep-all !important;
+}
+.year-era-name{
+  white-space:nowrap !important;
+  min-width:0 !important;
+}
+.year-era-source{
+  min-width:0 !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+}
+
+/* 2026-07-27：網站題名改為「中國歷朝正朔日曆」，頁首題名不加粗。 */
+.toolbar .title{
+  font-weight:400 !important;
+}
+.index-shell > h1,
+.index-shell > h1 span{
+  font-weight:400 !important;
 }

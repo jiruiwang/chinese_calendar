@@ -3,17 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>川象曆 0495年</title>
-<link rel="stylesheet" href="../css/calendar.css">
+<title>中國歷朝正朔日曆 0495年</title>
+<link rel="stylesheet" href="../css/calendar.css?v=20260727-chaodai-popup-compact">
 </head>
 <body data-year="495">
 <nav class="toolbar">
-  <div class="title">川象曆 0495年</div>
+  <div class="title">中國歷朝正朔日曆</div>
   <div class="controls">
-    <a href="../index.html">目录</a>
+    <a class="directory-link" href="../index.html" aria-label="返回目録">目録</a>
     <a href="494.html">← 0494年</a>
     <a href="496.html">0496年 →</a>
-    <label>跳至 <select id="yearSelect" aria-label="年份"></select></label>
+    <label>前往
+      <select id="yearSelect" aria-label="年份"></select>
+    </label>
   </div>
 </nav>
 <main class="book">
@@ -30,13 +32,13 @@
     <div class="table-wrap"><table class="calendar-table" id="calendarTable"></table></div>
   </section>
 </main>
-<div class="detail-panel" id="detailPanel" role="dialog" aria-live="polite">
-  <button class="detail-close" id="closeDetail" type="button">×</button>
+<div class="detail-panel" id="detailPanel" role="dialog" aria-live="polite" aria-label="日期詳情">
+  <button class="detail-close" id="closeDetail" type="button" aria-label="關閉">×</button>
   <div class="detail-title" id="detailTitle"></div>
   <div class="date-grid" id="dateGrid"></div>
   <div class="era-list" id="eraList"></div>
 </div>
-<script src="../data/495.js"></script>
-<script src="../js/calendar.js"></script>
+<script src="../data/495.js?v=20260727-bce4-nq"></script>
+<script src="../js/calendar.js?v=20260727-popup-compact"></script>
 </body>
 </html>
