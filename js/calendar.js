@@ -173,10 +173,14 @@
     const heading = `<div class="era-detail-head" aria-hidden="true">
       <span>國號</span><span>國君</span><span>年號</span><span>月</span><span>日</span><span>曆法</span>
     </div>`;
+    const source = String(day.source || "").trim();
+    const sourceHtml = source
+      ? `<div class="event-list"><div class="event-line source-line"><b>出典</b><span>${esc(source)}</span></div></div>`
+      : "";
     eraList.innerHTML = heading + (records.length
       ? rows.join("")
-      : `<div class="era-empty">無紀年資料</div>`);
-    panel.classList.remove("has-source");
+      : `<div class="era-empty">無紀年資料</div>`) + sourceHtml;
+    panel.classList.toggle("has-source", Boolean(source));
     panel.scrollTop = 0;
   }
 
